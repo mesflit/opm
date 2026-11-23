@@ -44,26 +44,27 @@ bozuk dosya One Punch Man'in sitede hiç görünmemesine yol açar.
 
 ## Bölüm ekleme
 
-Tüm işler mes-anime deposundaki betiklerle yapılır. İki depo yan yana durmalı (`~/mes-anime`, `~/opm`).
+Tüm işler mes-anime deposundaki `mes.py` ile yapılır. İki depo yan yana durur
+(`~/mes-anime`, `~/opm`); `mes.py` bu depoyu yoksa videolar olmadan kendisi klonlar.
 
-**Bu depoyu videolar olmadan klonla** (8 GB yerine ~3 MB):
-
-    cd ~/mes-anime && bash scripts/hafif_klon.sh opm
-
-**Yeni bölüm (MKV/MP4'ten):**
+**Yeni bölüm(ler):**
 
     cd ~/mes-anime
-    python3 scripts/pack.py /sdcard/Download/bolum.mkv opm s3/ep13 --extract-sub --tr
-    cd ../opm && git add --sparse -A && git commit -m "feat: S3 B13" && git push
-    git sparse-checkout reapply          # yüklenen .ts dosyalarını diskten siler
+    python3 mes.py ekle opm /sdcard/Download/bolum.mkv --sezon 3          # numara kendiliğinden (S3'te 13)
+    python3 mes.py ekle opm /sdcard/Download/sezon4/ --sezon 4            # klasördeki hepsi
+    python3 mes.py ekle opm bolum.mkv --sezon 3 --bolum 13 --baslik "Final"
 
-`pack.py` videoyu şifreler, altyazıları hazırlar ve `mes.anime`'yi günceller.
+Video şifrelenir, altyazılar hazırlanır (videodaki İngilizce + otomatik Türkçe), `mes.anime`
+güncellenir ve her bölüm ayrı gönderilir; yüklenen `.ts` dosyaları diskten silinir.
 
-**Bölüm klasörlerini başka yolla eklediysen** (hazır `index.m3u8` + `.ts` kopyaladıysan), push etmeden önce:
+**Bölüm klasörlerini başka yolla eklediysen** (hazır `index.m3u8` + `.ts` kopyaladıysan):
 
-    cd ~/mes-anime && python3 scripts/mesanime.py opm
+    cd ~/mes-anime && python3 mes.py guncelle opm
+
+**Sadece klonlamak için** (8 GB yerine ~3 MB): `python3 mes.py klonla opm`
 
 Push'tan birkaç dakika sonra (GitHub önbelleği ~5 dk) bölüm sitede görünür. mes-anime'ye push gerekmez.
+Ayrıntılar: mes-anime/README.md
 
 ## İnce noktalar
 

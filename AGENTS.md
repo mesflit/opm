@@ -18,11 +18,10 @@ Depo 8 GB+, ~9000 dosya (~8900 `.ts`). Her zaman videolarsız klonla:
     git clone --depth 1 --filter=blob:none --no-checkout https://github.com/mesflit/opm opm
     cd opm && git sparse-checkout set --no-cone '/*' '!*.ts' && git checkout
 
-(veya mes-anime içinden `bash scripts/hafif_klon.sh opm`). Böyle bir klonda blob içeriğine
+(veya mes-anime içinden `python3 mes.py klonla opm`). Böyle bir klonda blob içeriğine
 dokunan komutlar (`git ls-tree -l`, `git log -p`, `git diff` ile `.ts`, `git gc`/`repack`,
 `git checkout` ile sparse'ı kapatmak) eksik videoları **indirmeye başlar**. Dosya listesi için
 `git ls-tree -r --name-only HEAD` güvenlidir. Dosya eklerken `git add --sparse`.
-Bu depodan push ederken `git -c push.negotiate=true push` kullan.
 
 ## mes.anime
 
@@ -32,7 +31,7 @@ JSON; tam şema mes-anime/README.md'de. Değişmezler:
 - Bölüm kimliği `path`'ten türetilir (`s3/ep0` -> `s3-ep0`); izleyici ilerlemesi ve linkler
   buna bağlı. Klasörleri yeniden adlandırma/taşıma.
 - `title` alanlarını kullanıcı elle düzenleyebilir; betikler korur. Toplu yeniden başlıklandırma yapma.
-- Elle değil, mes-anime'den üret: `python3 scripts/mesanime.py opm` (sıralar, yeni klasörleri
+- Elle değil, mes-anime'den üret: `python3 mes.py guncelle opm --gonderme` (sıralar, yeni klasörleri
   ekler, silinenleri çıkarır, altyazı listesini yeniler, başlıkları korur).
 - Her bölüm tek satır; biçimi koru ki diff okunur kalsın.
 - Geçerli JSON olmalı, yoksa anime sitede tamamen kaybolur: `python3 -m json.tool mes.anime`.
@@ -41,15 +40,15 @@ JSON; tam şema mes-anime/README.md'de. Değişmezler:
 
 `index.m3u8` içinde `#EXT-X-KEY:METHOD=AES-128,URI="enc.key",IV=0x0...0`. `enc.key` bu depoda
 **yok ve olmamalı**; site anahtarı `SHA-256(VIDEO_SECRET_KEY)[:16]` olarak tarayıcıda üretir.
-Yeni bölümler mes-anime'deki `scripts/pack.py` ile aynı `VIDEO_SECRET_KEY` kullanılarak
+Yeni bölümler mes-anime'deki `python3 mes.py ekle opm ...` ile aynı `VIDEO_SECRET_KEY` kullanılarak
 üretilmeli. `index.m3u8` veya `.ts` dosyalarını elle değiştirme.
 
 ## Sık görevler
 
 - **Yeni bölüm klasörleri push edilmiş ama sitede yok:** mes-anime'de
-  `python3 scripts/mesanime.py opm`, sonra burada yalnızca `mes.anime`'yi commit + push.
+  `python3 mes.py guncelle opm` (mes.anime'yi yeniler ve gönderir).
 - **Bölüm başlığı değiştir:** `mes.anime` içinde ilgili satırın `title`'ı.
-- **Altyazı düzelt:** `sN/epM/tr.vtt` düz WebVTT; mes-anime'de `python3 scripts/altyazi.py temizle|cevir opm`.
+- **Altyazı düzelt:** `sN/epM/tr.vtt` düz WebVTT; mes-anime'de `python3 mes.py altyazi temizle|cevir opm`.
 
 ## Dikkat
 
