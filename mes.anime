@@ -19,7 +19,7 @@
     {"path": "s2/ep2", "title": "2. Sezon 2. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 2153083, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 532523, "resolution": "854x480"}]},
     {"path": "s2/ep3", "title": "2. Sezon 3. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 1894637, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 475718, "resolution": "854x480"}]},
     {"path": "s2/ep4", "title": "2. Sezon 4. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 2142124, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 509806, "resolution": "854x480"}]},
-    {"path": "s2/ep5", "title": "2. Sezon 5. Bölüm", "subtitles": ["tr", "en"]},
+    {"path": "s2/ep5", "title": "2. Sezon 5. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 2127844, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 550830, "resolution": "854x480"}]},
     {"path": "s2/ep6", "title": "2. Sezon 6. Bölüm", "subtitles": ["tr", "en"]},
     {"path": "s2/ep7", "title": "2. Sezon 7. Bölüm", "subtitles": ["tr", "en"]},
     {"path": "s2/ep8", "title": "2. Sezon 8. Bölüm", "subtitles": ["tr", "en"]},
