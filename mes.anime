@@ -31,7 +31,7 @@
     {"path": "s3/ep1", "title": "3. Sezon 1. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8306819, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 409358, "resolution": "854x480"}]},
     {"path": "s3/ep2", "title": "3. Sezon 2. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8318004, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 482220, "resolution": "854x480"}]},
     {"path": "s3/ep3", "title": "3. Sezon 3. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8322619, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 476326, "resolution": "854x480"}]},
-    {"path": "s3/ep4", "title": "3. Sezon 4. Bölüm", "subtitles": ["tr", "en"]},
+    {"path": "s3/ep4", "title": "3. Sezon 4. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8303992, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 397218, "resolution": "854x480"}]},
     {"path": "s3/ep5", "title": "3. Sezon 5. Bölüm", "subtitles": ["tr", "en"]},
     {"path": "s3/ep6", "title": "3. Sezon 6. Bölüm", "subtitles": ["tr", "en"]},
     {"path": "s3/ep7", "title": "3. Sezon 7. Bölüm", "subtitles": ["tr", "en"]},
