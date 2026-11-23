@@ -8,12 +8,14 @@ Site bu dosyaları doğrudan `raw.githubusercontent.com/mesflit/opm/main/...` ad
 
     opm/
     ├── mes.anime          # Anime bilgisi + bölüm listesi (site bunu okur)
+    ├── resize.py          # Bölümlere 480p kopya ekler (orijinallere dokunmaz)
     ├── poster.jpg         # Kapak görseli
     ├── s1/                # 1. sezon
     │   ├── ep1/
     │   │   ├── index.m3u8 # HLS oynatma listesi (AES-128, anahtar URI'si "enc.key")
     │   │   ├── seg_000.ts # ~6 sn'lik şifreli video parçaları
     │   │   ├── ...
+    │   │   ├── 480p/      # resize.py'nin kopyası (varsa): index.m3u8 + seg_XXX.ts
     │   │   ├── tr.vtt     # Türkçe altyazı
     │   │   └── en.vtt     # İngilizce altyazı
     │   └── ...
@@ -65,6 +67,30 @@ güncellenir ve her bölüm ayrı gönderilir; yüklenen `.ts` dosyaları diskte
 
 Push'tan birkaç dakika sonra (GitHub önbelleği ~5 dk) bölüm sitede görünür. mes-anime'ye push gerekmez.
 Ayrıntılar: mes-anime/README.md
+
+## 480p kopya (resize.py)
+
+İnternet yavaş olanlar için bölümlere 480p kopya eklenir. **Orijinal dosyalara dokunulmaz**,
+kopya bölüm klasörünün içine `480p/` olarak yazılır ve aynı anahtarla şifrelenir.
+
+    cd ~/opm
+    python3 resize.py                  # 480p'si olmayan tüm bölümler
+    python3 resize.py s3               # sadece 3. sezon
+    python3 resize.py s1/ep1 s2/ep4    # sadece bu bölümler
+    python3 resize.py --gonder         # her bölümden sonra commit + push (önerilen)
+
+- Sadece python3 ve ffmpeg gerekir; mes-anime'ye gerek yok.
+- Şifre anahtarı: `VIDEO_SECRET_KEY` -> `~/.mes-anime-anahtar` -> yayındaki site (kendisi alır).
+- Videolarsız klonda orijinal parçalar GitHub'dan indirilir; tam klonda diskten okunur.
+- `mes.anime`'de bölümün satırına `variants`, `bandwidth`, `resolution` yazılır. Site bunu görünce
+  oynatıcının ⚙️ menüsünde "Kalite: Otomatik / 1080p / 480p" gösterir; "Otomatik"te internet
+  yavaşsa kendiliğinden 480p'ye düşer. İndirme düğmelerine "480p (küçük dosya)" eklenir.
+- Orijinali zaten 480p veya küçükse kopya yapılmaz (`no_variants` işaretlenir).
+- Yarıda kalırsa tekrar çalıştır; kopyası olan bölümleri atlar (`--hepsi` ile yeniden yapar).
+- Uzun iştir (bölüm başına birkaç dakika). Telefonda yavaş olur, PC'de çalıştırmak daha iyi.
+- Depo büyür (480p kopya orijinalin yaklaşık 1/3-1/10'u kadar).
+- Bir kopyayı kaldırmak: `git rm -r s1/ep1/480p`, sonra mes.anime'de o satırdan `variants` kısmını sil.
+- Başka animeye kopyalanabilir: `resize.py`'yi o deponun köküne koyman yeter.
 
 ## İnce noktalar
 

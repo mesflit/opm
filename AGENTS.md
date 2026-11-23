@@ -43,6 +43,16 @@ JSON; tam şema mes-anime/README.md'de. Değişmezler:
 Yeni bölümler mes-anime'deki `python3 mes.py ekle opm ...` ile aynı `VIDEO_SECRET_KEY` kullanılarak
 üretilmeli. `index.m3u8` veya `.ts` dosyalarını elle değiştirme.
 
+## resize.py
+
+Kökteki tek başına çalışan betik (sadece stdlib + ffmpeg, mes-anime'yi import etmez). Her `sN/epM` için
+orijinal parçaları (diskte yoksa raw.githubusercontent'ten) geçici klasöre alır, `enc.key` yazar,
+`ffmpeg -allowed_extensions ALL` ile çözüp `scale=-2:480` yapar ve aynı anahtarla `sN/epM/480p/`'ye
+şifreler. Orijinal `index.m3u8`/`seg_*.ts`'ye asla yazmaz. `mes.anime`'ye `variants`
+(`[{name, path, bandwidth, resolution}]`), orijinalin `bandwidth`/`resolution`'ı veya `no_variants`
+yazar; `katalog_yaz` biçimi mes-anime'deki `araclar/katalog.py` ile aynı olmalı. Site (mes-anime
+`index.html`) `variants`'tan blob master playlist üretip kalite menüsü gösterir.
+
 ## Sık görevler
 
 - **Yeni bölüm klasörleri push edilmiş ama sitede yok:** mes-anime'de
