@@ -38,7 +38,7 @@
     {"path": "s3/ep8", "title": "3. Sezon 8. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8322984, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 644593, "resolution": "854x480"}]},
     {"path": "s3/ep9", "title": "3. Sezon 9. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8329456, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 701787, "resolution": "854x480"}]},
     {"path": "s3/ep10", "title": "3. Sezon 10. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8316453, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 544253, "resolution": "854x480"}]},
-    {"path": "s3/ep11", "title": "3. Sezon 11. Bölüm", "subtitles": ["tr", "en"]},
+    {"path": "s3/ep11", "title": "3. Sezon 11. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 8312837, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 598420, "resolution": "854x480"}]},
     {"path": "s3/ep12", "title": "3. Sezon 12. Bölüm", "subtitles": ["tr", "en"]}
   ]
 }
