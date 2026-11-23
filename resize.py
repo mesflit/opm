@@ -7,6 +7,8 @@ Kullanım (bu deponun klasöründe):
     python3 resize.py s1/ep1 s2/ep4    # sadece bu bölümler
     python3 resize.py --gonder         # her bölümden sonra commit + push
 
+GitHub Actions'ta: Actions -> "480p kopya" -> Run workflow (.github/workflows/resize.yml)
+
 Her bölüm için:  sN/epM/index.m3u8 + seg_*.ts  (orijinal, aynen kalır)
                  sN/epM/480p/index.m3u8 + seg_*.ts  (yeni, aynı anahtarla şifreli)
 ve mes.anime'de bölümün satırına "variants" eklenir; site bunu görünce kalite menüsü gösterir.
@@ -169,8 +171,11 @@ def kucult(yol, aes, sahip, depo, yukseklik, hiz):
         eksik = sum(not (kaynak / d).exists() for d, _ in liste)
         if eksik:
             print(f"⬇️  {eksik} parça GitHub'dan indiriliyor")
-        with ThreadPoolExecutor(8) as havuz:
-            list(havuz.map(getir, [d for d, _ in liste]))
+        try:
+            with ThreadPoolExecutor(8) as havuz:
+                list(havuz.map(getir, [d for d, _ in liste]))
+        except Exception as e:
+            hata(f"{yol}: parçalar indirilemedi ({e}). Depo herkese açık mı, dal main mi?")
 
         g, y = cozunurluk(tmp / "index.m3u8")
         if not y:
@@ -208,7 +213,14 @@ def gonder(yol, ad):
     if not cikti(["git", "-C", KOK, "diff", "--cached", "--name-only"]):
         return
     calistir(["git", "-C", KOK, "commit", "-q", "-m", f"feat: {yol} {ad}"])
-    calistir(["git", "-C", KOK, "push", "-q"])
+    for deneme in range(3):                                         # bu arada başkası push ettiyse
+        r = subprocess.run(["git", "-C", str(KOK), "push", "-q"], capture_output=True, text=True)
+        if r.returncode == 0:
+            break
+        if deneme == 2:
+            hata(f"push başarısız: {r.stderr.strip()[-300:]}")
+        print("↻ Bu arada depoya başka gönderim olmuş, güncellenip tekrar deneniyor")
+        calistir(["git", "-C", KOK, "pull", "-q", "--rebase"])
     if cikti(["git", "-C", KOK, "config", "core.sparseCheckout"]) == "true":
         calistir(["git", "-C", KOK, "sparse-checkout", "reapply"])      # yüklenen .ts'leri diskten sil
     print(f"⬆️  {yol}/{ad} gönderildi")
@@ -226,6 +238,7 @@ def main():
     p.add_argument("--hepsi", action="store_true", help="kopyası olanları da yeniden yap")
     p.add_argument("--gonder", action="store_true", help="her bölümden sonra commit + push")
     p.add_argument("--hiz", default="veryfast", help="ffmpeg preset (ultrafast/veryfast/medium)")
+    p.add_argument("--sinir", type=int, default=0, help="en fazla kaç bölüm (0: sınırsız)")
     a = p.parse_args()
 
     if not shutil.which("ffmpeg"):
@@ -239,6 +252,9 @@ def main():
         bolumler = [y for y in bolumler if any(y == s.strip("/") or y.startswith(s.strip("/") + "/") for s in a.secim)]
     if not a.hepsi:
         bolumler = [y for y in bolumler if not (KOK / y / ad / "index.m3u8").exists() and not bilgi.get(y, {}).get("no_variants")]
+    if a.sinir > 0 and len(bolumler) > a.sinir:
+        print(f"ℹ️  {len(bolumler)} bölümden ilk {a.sinir} tanesi yapılacak (kalanlar için tekrar çalıştır)")
+        bolumler = bolumler[:a.sinir]
     if not bolumler:
         print(f"ℹ️  {ad} yapılacak bölüm yok.")
         return

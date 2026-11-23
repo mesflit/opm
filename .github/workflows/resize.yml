@@ -1,0 +1,53 @@
+name: 480p kopya
+
+# resize.py'yi GitHub'da çalıştırır: 480p'si olmayan bölümlere kopya ekler ve her bölümü ayrı gönderir.
+# Orijinal dosyalara dokunmaz. Çalıştırma: Actions -> "480p kopya" -> Run workflow
+#
+# Secret gerekmez: şifre anahtarı yayındaki siteden alınır, push bu deponun kendi izniyle yapılır.
+# (İstersen VIDEO_SECRET_KEY secret'ı da eklenebilir; varsa o kullanılır.)
+on:
+  workflow_dispatch:
+    inputs:
+      secim:
+        description: "Sezon/bölüm (ör. s3 veya s1/ep1 s2/ep4). Boş: hepsi"
+        required: false
+        default: ""
+      sinir:
+        description: "En fazla kaç bölüm (0: hepsi). Kalanlar için tekrar çalıştır"
+        required: false
+        default: "0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: resize
+  cancel-in-progress: false
+
+jobs:
+  resize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Depoyu videolar olmadan çek
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            /*
+            !*.ts
+          sparse-checkout-cone-mode: false
+
+      - name: ffmpeg kur
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+
+      - name: 480p kopyaları üret ve gönder
+        env:
+          VIDEO_SECRET_KEY: ${{ secrets.VIDEO_SECRET_KEY }}
+          SECIM: ${{ inputs.secim }}
+          SINIR: ${{ inputs.sinir }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config advice.updateSparsePath false
+          python3 resize.py $SECIM --sinir "${SINIR:-0}" --gonder

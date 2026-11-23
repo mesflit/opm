@@ -73,6 +73,16 @@ Ayrıntılar: mes-anime/README.md
 İnternet yavaş olanlar için bölümlere 480p kopya eklenir. **Orijinal dosyalara dokunulmaz**,
 kopya bölüm klasörünün içine `480p/` olarak yazılır ve aynı anahtarla şifrelenir.
 
+**GitHub Actions ile (önerilen):** opm -> Actions -> **"480p kopya"** -> Run workflow.
+"secim" boşsa 480p'si olmayan tüm bölümler, `s3` yazarsan sadece 3. sezon. Her bölüm bitince
+ayrı gönderilir; yarıda kalırsa tekrar çalıştır, kaldığı yerden devam eder. Secret veya token
+gerekmez (anahtar siteden alınır, push deponun kendi izniyle yapılır). Bir çalıştırma en fazla
+~6 saat sürebilir; o yüzden çok bölüm varsa "sinir" ile bölebilirsin.
+
+Workflow çalışırken telefondan bölüm ekleyebilirsin, ama bittikten sonra `git pull` yap.
+
+**Elle (PC/telefon):**
+
     cd ~/opm
     python3 resize.py                  # 480p'si olmayan tüm bölümler
     python3 resize.py s3               # sadece 3. sezon

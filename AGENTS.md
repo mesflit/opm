@@ -52,6 +52,9 @@ orijinal parçaları (diskte yoksa raw.githubusercontent'ten) geçici klasöre a
 (`[{name, path, bandwidth, resolution}]`), orijinalin `bandwidth`/`resolution`'ı veya `no_variants`
 yazar; `katalog_yaz` biçimi mes-anime'deki `araclar/katalog.py` ile aynı olmalı. Site (mes-anime
 `index.html`) `variants`'tan blob master playlist üretip kalite menüsü gösterir.
+`.github/workflows/resize.yml` (workflow_dispatch) bunu Actions'ta çalıştırır: checkout `filter: blob:none` +
+sparse `!*.ts` (videolar inmez), anahtar siteden, push `GITHUB_TOKEN` (`contents: write`) ile; push reddedilirse
+`resize.py` `pull --rebase` yapıp tekrar dener.
 
 ## Sık görevler
 
