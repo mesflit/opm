@@ -3,7 +3,7 @@
   "category": "Aksiyon",
   "poster": "poster.jpg",
   "episodes": [
-    {"path": "s1/ep1", "title": "1. Sezon 1. Bölüm", "subtitles": ["tr", "en"]},
+    {"path": "s1/ep1", "title": "1. Sezon 1. Bölüm", "subtitles": ["tr", "en"], "bandwidth": 1737719, "resolution": "1920x1080", "variants": [{"name": "480p", "path": "480p", "bandwidth": 511854, "resolution": "854x480"}]},
     {"path": "s1/ep2", "title": "1. Sezon 2. Bölüm", "subtitles": ["tr", "en"]},
     {"path": "s1/ep3", "title": "1. Sezon 3. Bölüm", "subtitles": ["tr", "en"]},
     {"path": "s1/ep4", "title": "1. Sezon 4. Bölüm", "subtitles": ["tr", "en"]},
